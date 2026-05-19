@@ -1,0 +1,261 @@
+.adminContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: calc(100vh - var(--nav-height));
+  background-color: var(--secondary);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 2rem 0;
+  border: 1px solid var(--border);
+}
+
+@media (min-width: 1024px) {
+  .adminContainer {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+.sidebar {
+  background-color: var(--background);
+  border-right: 1px solid var(--border);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebarTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  padding-left: 0.75rem;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.navButton:hover {
+  background-color: var(--secondary);
+}
+
+.navButtonActive {
+  composes: navButton;
+  background-color: var(--primary);
+  color: white;
+}
+
+.navButtonActive:hover {
+  background-color: var(--primary-hover);
+}
+
+.mainContent {
+  padding: 2.5rem;
+  background-color: var(--background);
+  overflow-y: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.pageSubtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* Stats Cards */
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 640px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statCard {
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.statIcon {
+  background-color: var(--background);
+  color: var(--primary);
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+/* Form Styles */
+.form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 800px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.input, .select, .textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  outline: 2px solid var(--primary);
+}
+
+/* Table styles */
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.th {
+  background-color: var(--secondary);
+  padding: 1rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.td {
+  padding: 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.actionsCell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Ads placement list */
+.adsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .adsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.adPlacementCard {
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.adHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.adSlotName {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.adStatus {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: rgba(0, 200, 0, 0.1);
+  color: green;
+}
