@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/iconic-crawl",
+      "schedule": "*/30 * * * *"
+    }
+  ]
+}

@@ -11,13 +11,15 @@ import CategoriesPanel from '@/dashboard/Categories';
 import AnalyticsPanel from '@/dashboard/Analytics';
 import UsersPanel from '@/dashboard/Users';
 import AdvertisementsPanel from '@/dashboard/Advertisements';
+import AIAuthorPanel from '@/dashboard/AIAuthor';
 
 const TAB_LABELS: Record<string, string> = {
   posts: 'Posts Management',
   categories: 'Categories',
   analytics: 'Analytics & Traffic',
   users: 'User Profiles & RBAC',
-  advertisements: 'Sponsor Ads'
+  advertisements: 'Sponsor Ads',
+  aiauthor: '⚡ Iconic AI Author'
 };
 
 export const Dashboard = () => {
@@ -28,7 +30,7 @@ export const Dashboard = () => {
   const getAllowedTabs = (currentRole: User['role']): string[] => {
     switch (currentRole) {
       case 'super_admin':
-        return ['posts', 'categories', 'analytics', 'users', 'advertisements'];
+        return ['posts', 'categories', 'analytics', 'users', 'advertisements', 'aiauthor'];
       case 'editor':
         return ['posts', 'categories'];
       case 'journalist':
@@ -160,6 +162,7 @@ export const Dashboard = () => {
               {activeTab === 'analytics' && <AnalyticsPanel />}
               {activeTab === 'users' && <UsersPanel />}
               {activeTab === 'advertisements' && <AdvertisementsPanel />}
+              {activeTab === 'aiauthor' && <AIAuthorPanel />}
             </>
           )}
         </main>

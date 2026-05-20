@@ -37,7 +37,15 @@ export interface ArticleComment {
 }
 
 
+// Iconic AI Author profile — the autonomous Ghana/Africa news journalist
+export const ICONIC_AUTHOR: Author = {
+  name: "Iconic AI",
+  avatar: "/iconic-ai-avatar.png",
+  bio: "Iconic is ICONIC GH's autonomous AI journalist. Constantly monitoring the web for the latest Ghana and Africa news, curating and reporting 24/7 so you never miss a story."
+};
+
 const DEFAULT_AUTHORS: Record<string, Author> = {
+  iconic: ICONIC_AUTHOR,
   sarah: {
     name: "Sarah Jenkins",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
@@ -300,6 +308,10 @@ export const saveCommentsToStore = (comments: ArticleComment[]) => {
 
 
 const mapAuthorToUI = (firestoreAuthor: any): Author => {
+  // Special case: Iconic AI author
+  if (firestoreAuthor.id === 'iconic-ai' || firestoreAuthor.fullName === 'Iconic AI') {
+    return ICONIC_AUTHOR;
+  }
   return {
     name: firestoreAuthor.fullName || firestoreAuthor.name || "Unknown Author",
     avatar: firestoreAuthor.image || firestoreAuthor.avatar || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop",
@@ -308,6 +320,9 @@ const mapAuthorToUI = (firestoreAuthor: any): Author => {
 };
 
 const mapPostToArticle = (post: any, author: Author): Article => {
+  // Resolve Iconic AI author directly
+  const resolvedAuthor = post.authorId === 'iconic-ai' ? ICONIC_AUTHOR : author;
+
   const bodyParagraphs = post.content 
     ? (Array.isArray(post.content) ? post.content : post.content.split('\n\n').filter((p: string) => p.trim() !== '')) 
     : [];
@@ -323,7 +338,7 @@ const mapPostToArticle = (post: any, author: Author): Article => {
       : new Date().toISOString(),
     readTime: post.readTime || `${Math.max(1, Math.ceil((post.content?.split(/\s+/).length || 0) / 200))} min read`,
     views: post.views || 0,
-    author: author,
+    author: resolvedAuthor,
     body: bodyParagraphs,
     summary: post.summary || "",
     trendingScore: post.trendingScore || 0,
