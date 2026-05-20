@@ -1,12 +1,12 @@
 {
   "name": "ICONIC GH | Premium News Platform",
   "short_name": "ICONIC GH",
-  "description": "High-performance premium news, breaking-alerts, and editorial stories from around the globe.",
+  "description": "Ghana's premier digital news platform. Breaking news, politics, business, sports and more — 24/7.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#08080a",
-  "theme_color": "#ff2a5f",
+  "background_color": "#111111",
+  "theme_color": "#D60000",
   "status_bar": "black-translucent",
   "icons": [
     {
