@@ -200,7 +200,12 @@ Title: ${item.title}
 Source: ${item.source}
 Summary: ${item.description}
 
-Respond ONLY with valid JSON in this exact structure:
+Return valid JSON only.
+No markdown.
+No code fences.
+No explanations.
+
+Format exactly:
 {
   "title": "...",
   "excerpt": "...",
@@ -235,22 +240,33 @@ Respond ONLY with valid JSON in this exact structure:
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) return null;
 
+  const cleaned = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+
   try {
-    // Strip markdown code fences if present
-    const cleaned = text.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
     const parsed = JSON.parse(cleaned);
+
     return {
-      title: parsed.title || item.title,
-      excerpt: parsed.excerpt || item.description.slice(0, 120),
-      body: Array.isArray(parsed.body) ? parsed.body : [parsed.body],
-      category: parsed.category || item.category,
-      readTime: parsed.readTime || '3 min read',
+      title: parsed?.title || item.title,
+      excerpt: parsed?.excerpt || item.description?.slice(0, 120),
+      body: Array.isArray(parsed?.body) ? parsed.body : (parsed?.body ? [parsed.body] : [item.description]),
+      category: parsed?.category || item.category,
+      readTime: parsed?.readTime || '3 min read',
       image: item.image,
       sourceUrl: item.link,
       sourceName: item.source,
     };
-  } catch (e) {
-    console.error('Failed to parse Gemini JSON response:', e, text);
-    return null;
+  } catch (error) {
+    console.error("Gemini returned invalid JSON:", cleaned);
+
+    return {
+      title: item.title,
+      excerpt: item.description?.slice(0, 120),
+      body: [item.description || "No content available"],
+      category: item.category,
+      readTime: '3 min read',
+      image: item.image,
+      sourceUrl: item.link,
+      sourceName: item.source,
+    };
   }
 }
