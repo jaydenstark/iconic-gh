@@ -17,6 +17,38 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ id }) => {
   const [post, setPost] = useState<Article | null>(null);
   const [relatedStories, setRelatedStories] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Reading Progress Bar variables and compatibility fallbacks
+  const [scrollPercent, setScrollPercent] = useState(0);
+  const [supportsNativeScroll, setSupportsNativeScroll] = useState(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const nativeSupported = 
+        window.CSS && 
+        window.CSS.supports && 
+        window.CSS.supports('animation-timeline', 'scroll()');
+      
+      setSupportsNativeScroll(!!nativeSupported);
+
+      if (!nativeSupported) {
+        const handleScroll = () => {
+          const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+          if (scrollable > 0) {
+            setScrollPercent(window.scrollY / scrollable);
+          }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Trigger once initially
+        handleScroll();
+        
+        return () => {
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }
+    }
+  }, [post]); // Recheck when post is loaded and page expands
 
   useEffect(() => {
     const fetchArticleData = async () => {
@@ -78,6 +110,13 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ id }) => {
 
   return (
     <article className={styles.articleContainer}>
+      {/* Decorative Reading Progress Bar with screen reader bypass */}
+      <div 
+        className={styles.progressBar} 
+        aria-hidden="true"
+        style={supportsNativeScroll ? undefined : { transform: `scaleX(${scrollPercent})` }}
+      />
+
       <header className={styles.header}>
         <span className={styles.category}>{post.category}</span>
         <h1 className={styles.title}>{post.title}</h1>

@@ -142,3 +142,18 @@ button {
 .fade-in {
   animation: fadeIn 0.5s ease forwards;
 }
+
+/* Home Page Layout Grid */
+.homeGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+@media (min-width: 992px) {
+  .homeGrid {
+    grid-template-columns: 2.2fr 1fr;
+  }
+}
+
