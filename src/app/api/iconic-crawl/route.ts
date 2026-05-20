@@ -121,38 +121,52 @@ export async function POST(request: NextRequest) {
   // Get active feeds
   const activeFeeds = RSS_FEEDS.filter(f => f.enabled);
 
-  // 3. Fetch and process each feed
-  for (const feed of activeFeeds) {
+  // 3. Fetch all active feeds in parallel (fast, no rate limits for fetch)
+  const allItems: { item: any; feedName: string }[] = [];
+  const feedResults = await Promise.allSettled(
+    activeFeeds.map(async (feed) => {
+      try {
+        const xml = await fetchRssFeed(feed.url);
+        const items = parseRssItems(xml, feed.name, feed.category);
+        stats.feedsProcessed++;
+        for (const item of items) {
+          allItems.push({ item, feedName: feed.name });
+        }
+      } catch (err) {
+        throw new Error(`Failed to process feed ${feed.name}: ${err}`);
+      }
+    })
+  );
+
+  // Collect feed-level errors
+  for (const r of feedResults) {
+    if (r.status === 'rejected') {
+      stats.errors.push(r.reason?.message || String(r.reason));
+    }
+  }
+
+  // 4. Find the first unseen article across all feeds
+  let selectedItem: any = null;
+  let selectedUrlHash: string = '';
+
+  for (const candidate of allItems) {
+    const urlHash = await hashUrl(candidate.item.link);
+    if (seenUrls.has(urlHash)) {
+      stats.skippedDuplicates++;
+      continue;
+    }
+    // We found our first unseen article!
+    selectedItem = candidate.item;
+    selectedUrlHash = urlHash;
+    break; // Only process one new article per run to stay well under the Gemini 5 RPM rate limit
+  }
+
+  // 5. Paraphrase and publish the single selected article
+  if (selectedItem) {
     try {
-      const xml = await fetchRssFeed(feed.url);
-      const items = parseRssItems(xml, feed.name, feed.category);
-      stats.feedsProcessed++;
-
-      for (const item of items) {
-        // 4. Deduplicate
-        const urlHash = await hashUrl(item.link);
-        if (seenUrls.has(urlHash)) {
-          stats.skippedDuplicates++;
-          continue;
-        }
-
-        // 5. Paraphrase with Gemini
-        let paraphrased;
-        try {
-          paraphrased = await paraphraseWithGemini(item, geminiKey);
-        } catch (aiErr) {
-          stats.errors.push(`Gemini error for "${item.title}": ${aiErr}`);
-          continue;
-        }
-
-        if (!paraphrased) {
-          stats.errors.push(`No paraphrase returned for: ${item.title}`);
-          continue;
-        }
-
-        // 6. Build article object
-        const now = new Date().toISOString();
-        const articleId = `iconic-${urlHash}`;
+      const paraphrased = await paraphraseWithGemini(selectedItem, geminiKey);
+      if (paraphrased) {
+        const articleId = `iconic-${selectedUrlHash}`;
         const wordCount = paraphrased.body.join(' ').split(/\s+/).length;
         const estimatedReadTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
 
@@ -170,8 +184,6 @@ export async function POST(request: NextRequest) {
           likes: 0,
           isBreaking: false,
           isFeatured: false,
-          publishDate: now,
-          createdAt: now,
           status: 'approved',
           sourceUrl: paraphrased.sourceUrl,
           sourceName: paraphrased.sourceName,
@@ -179,43 +191,37 @@ export async function POST(request: NextRequest) {
           aiGenerated: true,
         };
 
-        // 7. Write to Firestore or log
+        // Write to Firestore
         if (useFirestore && firestore) {
-          try {
-            const { db, doc, setDoc, collection } = firestore;
-            const { serverTimestamp } = await import('firebase/firestore');
-
-            await setDoc(doc(db, 'posts', articleId), {
-              ...newPost,
-              publishDate: serverTimestamp(),
-              createdAt: serverTimestamp(),
-            });
-
-            // Record seen URL
-            await setDoc(doc(db, 'iconic_seen_urls', urlHash), {
-              url: item.link,
-              title: item.title,
-              seenAt: serverTimestamp(),
-            });
-
-            seenUrls.add(urlHash);
-            stats.newArticles++;
-            stats.articlesPublished.push(paraphrased.title);
-          } catch (writeErr) {
-            stats.errors.push(`Firestore write error: ${writeErr}`);
-          }
+          const { db, doc, setDoc } = firestore;
+          const { serverTimestamp } = await import('firebase/firestore');
+          await setDoc(doc(db, 'posts', articleId), {
+            ...newPost,
+            publishDate: serverTimestamp(),
+            createdAt: serverTimestamp(),
+          });
+          await setDoc(doc(db, 'iconic_seen_urls', selectedUrlHash), {
+            url: selectedItem.link,
+            title: selectedItem.title,
+            seenAt: serverTimestamp(),
+          });
+          seenUrls.add(selectedUrlHash);
         } else {
-          // Dev mode: just log
           console.log('[Iconic Dev] Would publish:', paraphrased.title);
-          stats.newArticles++;
-          stats.articlesPublished.push(paraphrased.title);
         }
+
+        stats.newArticles = 1;
+        stats.articlesPublished.push(paraphrased.title);
+      } else {
+        stats.errors.push(`Failed to paraphrase: ${selectedItem.title}`);
       }
-    } catch (feedErr) {
-      stats.errors.push(`Feed error (${feed.name}): ${feedErr}`);
-      console.error(`Failed to process feed ${feed.name}:`, feedErr);
+    } catch (err) {
+      stats.errors.push(`Error during paraphrase/publish: ${err}`);
     }
+  } else {
+    console.log('[Iconic] No new unseen articles found across feeds.');
   }
+
 
   // Update last-run timestamp
   if (useFirestore && firestore) {

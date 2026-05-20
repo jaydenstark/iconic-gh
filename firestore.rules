@@ -80,7 +80,7 @@ service cloud.firestore {
                    || isSuperAdmin() 
                    || isEditor() 
                    || (isJournalist() && resource.data.authorId == request.auth.uid);
-      allow create: if isSuperAdmin() || isEditor() || isJournalist();
+      allow create: if isSuperAdmin() || isEditor() || isJournalist() || (request.auth == null && request.resource.data.authorId == 'iconic-ai');
       allow delete: if isSuperAdmin() || isEditor();
     }
 
@@ -143,6 +143,19 @@ service cloud.firestore {
     match /notifications/{notificationId} {
       allow read: if true;
       allow write: if isSuperAdmin() || isEditor();
+    }
+
+    // ==========================================
+    // ICONIC CONFIG AND SEEN URLS RULES
+    // ==========================================
+    match /iconic_config/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || request.auth == null;
+    }
+
+    match /iconic_seen_urls/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || request.auth == null;
     }
   }
 }

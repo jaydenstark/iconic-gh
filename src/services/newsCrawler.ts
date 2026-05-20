@@ -113,7 +113,7 @@ export function parseRssItems(xml: string, sourceName: string, defaultCategory: 
   let match;
   let count = 0;
 
-  while ((match = itemPattern.exec(xml)) !== null && count < 10) {
+  while ((match = itemPattern.exec(xml)) !== null && count < 3) {  // Max 3 per feed for speed
     const block = match[1] || match[2];
     if (!block) continue;
 
@@ -210,19 +210,19 @@ Respond ONLY with valid JSON in this exact structure:
 }`;
 
   const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
-          temperature: 0.75,
-          maxOutputTokens: 1024,
+          temperature: 0.7,
+          maxOutputTokens: 1500,      // Enough room for 4-6 paragraphs in JSON
           responseMimeType: 'application/json',
         },
       }),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(20000), // 20s per article
     }
   );
 
