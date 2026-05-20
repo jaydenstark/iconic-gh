@@ -189,7 +189,7 @@ Your task: Rewrite the following news story in your own words for a Ghanaian and
 RULES:
 - Write a NEW headline (punchy, journalistic, max 12 words)
 - Write a one-sentence excerpt/teaser (max 30 words)
-- Write 4-6 body paragraphs expanding on the story. Add Ghanaian/African context where relevant.
+- Write 3-4 body paragraphs expanding on the story. Add Ghanaian/African context where relevant.
 - Use professional newspaper journalism style — factual, clear, engaging.
 - Do NOT copy the original text verbatim. Paraphrase everything.
 - Choose ONE category from: Ghana, Africa, Politics, Business, Sports, Entertainment, Health, Technology
@@ -204,7 +204,7 @@ Respond ONLY with valid JSON in this exact structure:
 {
   "title": "...",
   "excerpt": "...",
-  "body": ["paragraph 1", "paragraph 2", "paragraph 3", "paragraph 4"],
+  "body": ["paragraph 1", "paragraph 2", "paragraph 3"],
   "category": "...",
   "readTime": "... min read"
 }`;
@@ -218,7 +218,7 @@ Respond ONLY with valid JSON in this exact structure:
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 1500,      // Enough room for 4-6 paragraphs in JSON
+          maxOutputTokens: 2500,      // Plenty of room for 3-4 paragraphs in JSON
           responseMimeType: 'application/json',
         },
       }),
