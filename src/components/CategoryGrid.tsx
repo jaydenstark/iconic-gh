@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Landmark, Briefcase, Cpu, Trophy, Film, Globe } from 'lucide-react';
-import styles from './CategorySection.module.css';
+import styles from './CategoryGrid.module.css';
 
 const CATEGORIES = [
   { name: 'Politics', slug: 'politics', icon: Landmark, count: 142 },
@@ -12,7 +14,7 @@ const CATEGORIES = [
   { name: 'World', slug: 'world', icon: Globe, count: 230 },
 ];
 
-export const CategorySection = () => {
+export const CategoryGrid = () => {
   return (
     <section className={styles.section}>
       <h2 className={styles.title}>Browse by Category</h2>
@@ -20,7 +22,7 @@ export const CategorySection = () => {
         {CATEGORIES.map((cat) => {
           const Icon = cat.icon;
           return (
-            <Link key={cat.slug} href={`/category/${cat.slug}`} className={styles.card}>
+            <Link key={cat.slug} href={`/categories?c=${cat.slug}`} className={styles.card}>
               <div className={styles.iconWrapper}>
                 <Icon size={32} />
               </div>

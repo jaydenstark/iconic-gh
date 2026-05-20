@@ -1,0 +1,148 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Auth and role verification helpers
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    
+    function getUserRole() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid)) 
+        ? getUserData().role 
+        : 'visitor';
+    }
+
+    // Role predicates mapping the 6 platform access roles
+    function isSuperAdmin() {
+      return isAuthenticated() && (getUserRole() == 'super_admin' || getUserRole() == 'admin');
+    }
+
+    function isEditor() {
+      return isAuthenticated() && (getUserRole() == 'editor' || isSuperAdmin());
+    }
+
+    function isJournalist() {
+      return isAuthenticated() && (getUserRole() == 'journalist' || isSuperAdmin());
+    }
+
+    function isModerator() {
+      return isAuthenticated() && (getUserRole() == 'moderator' || isSuperAdmin());
+    }
+
+    function isAdvertiser() {
+      return isAuthenticated() && (getUserRole() == 'advertiser' || isSuperAdmin());
+    }
+
+    // ==========================================
+    // USERS COLLECTION RULES
+    // ==========================================
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      // Allow users to sync/register their own profiles or super admins to manage roles
+      allow write: if isOwner(userId) || isSuperAdmin();
+    }
+
+    // ==========================================
+    // AUTHORS COLLECTION RULES
+    // ==========================================
+    match /authors/{authorId} {
+      allow read: if true;
+      // Super Admin manages authors, Journalist can manage their matching author profile
+      allow write: if isSuperAdmin() || (isJournalist() && isOwner(authorId));
+    }
+
+    // ==========================================
+    // CATEGORIES COLLECTION RULES
+    // ==========================================
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    // ==========================================
+    // POSTS COLLECTION RULES
+    // ==========================================
+    match /posts/{postId} {
+      allow read: if true;
+      // Allow public (Visitor) to increment views and likes atomically
+      // Allow Journalists to edit/update their own posts only
+      // Allow Editors and Super Admins to approve, reject, edit, or manage any posts
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views', 'likes']) 
+                   || isSuperAdmin() 
+                   || isEditor() 
+                   || (isJournalist() && resource.data.authorId == request.auth.uid);
+      allow create: if isSuperAdmin() || isEditor() || isJournalist();
+      allow delete: if isSuperAdmin() || isEditor();
+    }
+
+    // ==========================================
+    // COMMENTS COLLECTION RULES
+    // ==========================================
+    match /comments/{commentId} {
+      allow read: if true;
+      // Allow public registered Visitors to create comment matching their auth ID
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      // Allow comment owner, Moderator, or Super Admin to update/delete comment
+      allow update, delete: if isSuperAdmin() || isModerator() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+    }
+
+    // ==========================================
+    // ADVERTISEMENTS COLLECTION RULES
+    // ==========================================
+    match /advertisements/{adId} {
+      allow read: if true;
+      // Super Admin and Advertiser manage ads
+      allow write: if isSuperAdmin() || isAdvertiser();
+    }
+
+    // ==========================================
+    // BREAKING NEWS Ticker RULES
+    // ==========================================
+    match /breakingNews/{newsId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || isEditor();
+    }
+
+    // ==========================================
+    // TRENDING SYSTEM RULES
+    // ==========================================
+    match /trending/{trendingId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || isEditor();
+    }
+
+    // ==========================================
+    // VIDEOS COLLECTION RULES
+    // ==========================================
+    match /videos/{videoId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || isEditor();
+    }
+
+    // ==========================================
+    // NEWSLETTER SUBSCRIBERS RULES
+    // ==========================================
+    match /newsletter/{subscriberId} {
+      // Allow public (Visitor) signups, but only Super Admin can inspect/manage
+      allow create: if true;
+      allow read, update, delete: if isSuperAdmin();
+    }
+
+    // ==========================================
+    // NOTIFICATIONS BROADCAST RULES
+    // ==========================================
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || isEditor();
+    }
+  }
+}

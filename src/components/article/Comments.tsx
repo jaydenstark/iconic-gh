@@ -1,32 +1,69 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
+import { ArticlesService, ArticleComment } from '@/services/articles';
 import styles from './Article.module.css';
 
 export const Comments = () => {
-  const [comments, setComments] = useState([
-    { id: 1, author: 'Alex Rivera', text: 'This is an incredibly detailed and well-written analysis. The shift in corporate infrastructure is real.', time: '2 hours ago' },
-    { id: 2, author: 'Elena Rostova', text: 'Excellent piece! I am interested to see how standard regulatory commissions will respond to these scaling dynamics.', time: '1 hour ago' }
-  ]);
+  const params = useParams();
+  const postId = typeof params?.id === 'string' ? params.id : '';
+
+  const [comments, setComments] = useState<ArticleComment[]>([]);
   const [newComment, setNewComment] = useState('');
   const [commentName, setCommentName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (postId) {
+      loadComments();
+    }
+  }, [postId]);
+
+  const loadComments = async () => {
+    setIsLoading(true);
+    try {
+      const list = await ArticlesService.getCommentsForArticle(postId);
+      setComments(list);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newComment.trim() || !commentName.trim()) return;
+    if (!newComment.trim() || !commentName.trim() || !postId) return;
 
-    setComments([
-      ...comments,
-      {
-        id: Date.now(),
-        author: commentName,
-        text: newComment,
-        time: 'Just now'
-      }
-    ]);
-    setNewComment('');
-    setCommentName('');
+    try {
+      const added = await ArticlesService.addComment(postId, commentName, newComment);
+      setComments(prev => [added, ...prev]);
+      setNewComment('');
+      setCommentName('');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to submit comment.');
+    }
+  };
+
+  const formatTime = (isoString: string) => {
+    try {
+      const date = new Date(isoString);
+      const diffMs = Date.now() - date.getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMins / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffMins < 1) return 'Just now';
+      if (diffMins < 60) return `${diffMins}m ago`;
+      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffDays < 7) return `${diffDays}d ago`;
+      return date.toLocaleDateString();
+    } catch (e) {
+      return 'Recent';
+    }
   };
 
   return (
@@ -53,22 +90,34 @@ export const Comments = () => {
         <Button type="submit" style={{ alignSelf: 'flex-start' }}>Post Comment</Button>
       </form>
 
-      <div className={styles.commentsList}>
-        {comments.map((comment) => (
-          <div key={comment.id} className={styles.comment}>
-            <div className={styles.commentAvatar}>
-              {comment.author.charAt(0)}
-            </div>
-            <div className={styles.commentContent}>
-              <div className={styles.commentHeader}>
-                <span className={styles.commentAuthor}>{comment.author}</span>
-                <span className={styles.commentTime}>{comment.time}</span>
+      {isLoading ? (
+        <div style={{ color: 'var(--muted)', fontSize: '0.9rem', textAlign: 'center', padding: '2rem 0' }}>
+          Loading comments...
+        </div>
+      ) : (
+        <div className={styles.commentsList}>
+          {comments.length === 0 ? (
+            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', fontStyle: 'italic', textAlign: 'center', padding: '1.5rem 0' }}>
+              No comments yet. Be the first to share your thoughts!
+            </p>
+          ) : (
+            comments.map((comment) => (
+              <div key={comment.id} className={styles.comment}>
+                <div className={styles.commentAvatar}>
+                  {comment.authorName.charAt(0).toUpperCase()}
+                </div>
+                <div className={styles.commentContent}>
+                  <div className={styles.commentHeader}>
+                    <span className={styles.commentAuthor}>{comment.authorName}</span>
+                    <span className={styles.commentTime}>{formatTime(comment.createdAt)}</span>
+                  </div>
+                  <p className={styles.commentText}>{comment.content}</p>
+                </div>
               </div>
-              <p className={styles.commentText}>{comment.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 };

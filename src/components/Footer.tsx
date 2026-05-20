@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Button } from '../ui/Button';
+import { Button } from './ui/Button';
 import styles from './Footer.module.css';
 
 export const Footer = () => {
@@ -30,11 +30,11 @@ export const Footer = () => {
         <div>
           <h3 className={styles.linkTitle}>Sections</h3>
           <nav className={styles.links}>
-            <Link href="/category/politics" className={styles.link}>Politics</Link>
-            <Link href="/category/business" className={styles.link}>Business</Link>
-            <Link href="/category/tech" className={styles.link}>Tech</Link>
-            <Link href="/category/sports" className={styles.link}>Sports</Link>
-            <Link href="/category/entertainment" className={styles.link}>Entertainment</Link>
+            <Link href="/categories?c=politics" className={styles.link}>Politics</Link>
+            <Link href="/categories?c=business" className={styles.link}>Business</Link>
+            <Link href="/categories?c=tech" className={styles.link}>Tech</Link>
+            <Link href="/categories?c=sports" className={styles.link}>Sports</Link>
+            <Link href="/categories?c=entertainment" className={styles.link}>Entertainment</Link>
           </nav>
         </div>
 
@@ -54,8 +54,10 @@ export const Footer = () => {
         <p className={styles.copyright}>
           &copy; {new Date().getFullYear()} ICONIC GH. All rights reserved.
         </p>
-        <div className={styles.links} style={{ flexDirection: 'row' }}>
-          {/* Social Links could go here */}
+        <div className={styles.links} style={{ flexDirection: 'row', gap: '1rem' }}>
+          <a href="#" className={styles.link}>Twitter</a>
+          <a href="#" className={styles.link}>Facebook</a>
+          <a href="#" className={styles.link}>Instagram</a>
         </div>
       </div>
     </footer>
