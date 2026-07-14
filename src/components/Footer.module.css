@@ -26,15 +26,15 @@
 }
 
 .logo {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: fit-content;
 }
 
-.logo span {
-  color: var(--primary);
+.logo img {
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .description {

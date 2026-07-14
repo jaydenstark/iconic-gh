@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface User {
   id: string; // matches Firestore doc ID and Firebase Auth uid
   name: string;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Iconic AI Author — Cron Crawl API Route
  * 
@@ -90,7 +91,7 @@ export async function POST(request: NextRequest) {
   const useFirestore = process.env.NEXT_PUBLIC_USE_FIRESTORE === 'true';
 
   // 2. Check if Firestore is available and Iconic is enabled
-  let seenUrls = new Set<string>();
+  const seenUrls = new Set<string>();
   let firestore: Awaited<ReturnType<typeof getFirestoreClient>> | null = null;
 
   if (useFirestore) {

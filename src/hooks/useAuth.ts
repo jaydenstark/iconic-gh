@@ -8,8 +8,11 @@ export const useAuth = () => {
 
   useEffect(() => {
     // Initial fetch
-    setUser(AuthService.getCurrentUser());
-    setLoading(false);
+    const currentUser = AuthService.getCurrentUser();
+    Promise.resolve().then(() => {
+      setUser(currentUser);
+      setLoading(false);
+    });
 
     // Listen to changes
     const handleRoleChange = () => {

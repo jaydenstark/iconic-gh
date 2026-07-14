@@ -19,6 +19,22 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Redirect non-www to www domain
+  async redirects() {
+    return [
+      {
+        source: "/:path((?!api).*)*",
+        has: [
+          {
+            type: "host",
+            value: "iconicgh.com",
+          },
+        ],
+        destination: "https://www.iconicgh.com/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

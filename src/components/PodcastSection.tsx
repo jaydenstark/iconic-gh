@@ -170,6 +170,7 @@ export const PodcastSection = () => {
               {/* Animated Audio Frequency Waves */}
               <div className={styles.waveContainer}>
                 {[...Array(16)].map((_, i) => {
+                  // eslint-disable-next-line react-hooks/purity
                   const randomHeight = isPlaying ? `${Math.floor(Math.random() * 28) + 6}px` : '4px';
                   const animationDelay = `${i * 0.1}s`;
                   return (

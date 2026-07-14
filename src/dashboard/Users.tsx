@@ -91,7 +91,7 @@ export const Users: React.FC = () => {
   const { user, role, changeRole } = useAuth();
 
   // Authors State
-  const [authorsList, setAuthorsList] = useState<Author[]>([]);
+  const [authorsList, setAuthorsList] = useState<Author[]>(() => getAuthorsFromStore());
   const [selectedAuthorIndex, setSelectedAuthorIndex] = useState<number>(-1); // -1 means Create New
   
   // Form states
@@ -99,24 +99,21 @@ export const Users: React.FC = () => {
   const [formBio, setFormBio] = useState('');
   const [formAvatar, setFormAvatar] = useState(AVATAR_PRESETS[0]);
 
-  // Load authors on mount
-  useEffect(() => {
-    setAuthorsList(getAuthorsFromStore());
-  }, []);
-
   // Update form inputs when selected author changes
   useEffect(() => {
-    if (selectedAuthorIndex >= 0 && selectedAuthorIndex < authorsList.length) {
-      const author = authorsList[selectedAuthorIndex];
-      setFormName(author.name);
-      setFormBio(author.bio);
-      setFormAvatar(author.avatar);
-    } else {
-      // Clear form for new author
-      setFormName('');
-      setFormBio('');
-      setFormAvatar(AVATAR_PRESETS[0]);
-    }
+    Promise.resolve().then(() => {
+      if (selectedAuthorIndex >= 0 && selectedAuthorIndex < authorsList.length) {
+        const author = authorsList[selectedAuthorIndex];
+        setFormName(author.name);
+        setFormBio(author.bio);
+        setFormAvatar(author.avatar);
+      } else {
+        // Clear form for new author
+        setFormName('');
+        setFormBio('');
+        setFormAvatar(AVATAR_PRESETS[0]);
+      }
+    });
   }, [selectedAuthorIndex, authorsList]);
 
   const handleSwitchProfile = (newRole: UserMockProfile['role']) => {
@@ -141,7 +138,7 @@ export const Users: React.FC = () => {
       avatar: formAvatar.trim() || AVATAR_PRESETS[0]
     };
 
-    let newAuthorsList = [...authorsList];
+    const newAuthorsList = [...authorsList];
     if (selectedAuthorIndex >= 0) {
       // Editing existing author
       newAuthorsList[selectedAuthorIndex] = updatedAuthor;

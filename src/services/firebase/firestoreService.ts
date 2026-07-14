@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { 
   collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, 
   deleteDoc, query, where, orderBy, limit, increment, onSnapshot 

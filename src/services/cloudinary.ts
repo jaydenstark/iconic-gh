@@ -7,7 +7,7 @@ export const cloudinaryConfig = {
   apiSecret: process.env.CLOUDINARY_API_SECRET,
 };
 
-export const getCloudinaryUrl = (publicId: string, options?: any) => {
+export const getCloudinaryUrl = (publicId: string) => {
   // Basic helper to generate a cloudinary URL if not using the cloudinary package directly
   const cloudName = cloudinaryConfig.cloudName;
   if (!cloudName) return '';

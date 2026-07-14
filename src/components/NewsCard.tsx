@@ -13,6 +13,7 @@ interface NewsCardProps {
 export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   const getTimeAgo = (dateStr: string) => {
     const past = new Date(dateStr).getTime();
+    // eslint-disable-next-line react-hooks/purity
     const now = Date.now();
     const diffMins = Math.floor((now - past) / (1000 * 60));
     

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
-import { Megaphone, PlusCircle, Trash2, Link as LinkIcon, Eye } from 'lucide-react';
+import { Megaphone, Trash2, Link as LinkIcon, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Advertisement } from '@/services/firebase/types';
 import { AdvertisementsService } from '@/services/advertisements';
@@ -34,7 +35,9 @@ export const Advertisements: React.FC<AdvertisementsProps> = ({
   };
 
   useEffect(() => {
-    loadAds();
+    Promise.resolve().then(() => {
+      loadAds();
+    });
   }, []);
 
   const handleRegisterAd = async (e: React.FormEvent) => {

@@ -2,12 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Moon, Sun, Menu, Bell, BellOff, X, Shield } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Search, Moon, Sun, Bell, BellOff, X, Shield } from 'lucide-react';
 import { ArticlesService, Article } from '@/services/articles';
+import { useAuth } from '@/hooks/useAuth';
 import styles from './Navbar.module.css';
 
 export const Navbar = () => {
+  const { role } = useAuth();
+  const pathname = usePathname();
   const [isDark, setIsDark] = useState(false);
+  const isAdmin = role === 'super_admin' || role === 'editor';
   
   // Search state
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -23,17 +28,21 @@ export const Navbar = () => {
     if (typeof window !== 'undefined') {
       const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark' ||
         (!document.documentElement.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      setIsDark(isDarkMode);
       
-      // Check notification support & status
-      setIsNotificationSupported('Notification' in window);
+      const isSupported = 'Notification' in window;
       const sub = localStorage.getItem('iconic_gh_push_subscribed') === 'true';
-      if (sub && Notification.permission === 'granted') {
-        setIsSubscribed(true);
-      } else if (sub) {
-        localStorage.removeItem('iconic_gh_push_subscribed');
-        setIsSubscribed(false);
-      }
+      const hasPermission = Notification.permission === 'granted';
+
+      Promise.resolve().then(() => {
+        setIsDark(isDarkMode);
+        setIsNotificationSupported(isSupported);
+        if (sub && hasPermission) {
+          setIsSubscribed(true);
+        } else if (sub) {
+          localStorage.removeItem('iconic_gh_push_subscribed');
+          setIsSubscribed(false);
+        }
+      });
     }
   }, []);
 
@@ -82,7 +91,7 @@ export const Navbar = () => {
         
         new Notification('Welcome to ICONIC GH!', {
           body: 'You are now subscribed to receive real-time breaking news and trending updates.',
-          icon: '/icons/icon-192x192.png',
+          icon: '/icon-192x192.png',
         });
       } else {
         alert('Notification permission was denied. Please adjust your browser settings to receive alerts.');
@@ -140,18 +149,25 @@ export const Navbar = () => {
       ) : (
         <>
           <Link href="/" className={styles.logo}>
-            ICONIC<span>GH</span>
+            <img 
+              src="/logo.png" 
+              alt="ICONIC GH Logo" 
+              style={{ height: '50px', width: 'auto' }}
+            />
           </Link>
 
           <nav className={styles.links}>
-            <Link href="/category/politics" className={styles.link}>Politics</Link>
-            <Link href="/category/business" className={styles.link}>Business</Link>
-            <Link href="/category/tech" className={styles.link}>Tech</Link>
-            <Link href="/category/sports" className={styles.link}>Sports</Link>
-            <Link href="/category/entertainment" className={styles.link}>Entertainment</Link>
-            <Link href="/admin" className={styles.link} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--primary)', fontWeight: 700 }}>
-              <Shield size={14} /> Console
-            </Link>
+            <Link href="/" className={`${styles.link} ${pathname === '/' ? styles.active : ''}`}>Home</Link>
+            <Link href="/#services" className={styles.link}>Services</Link>
+            <Link href="/#portfolio" className={styles.link}>Portfolio</Link>
+            <Link href="/about" className={`${styles.link} ${pathname === '/about' ? styles.active : ''}`}>About</Link>
+            <Link href="/blog" className={`${styles.link} ${pathname?.startsWith('/blog') || pathname?.startsWith('/article') || pathname?.startsWith('/categories') || pathname?.startsWith('/search') ? styles.active : ''}`}>Blog</Link>
+            <Link href="/#contact" className={styles.link}>Contact</Link>
+            {isAdmin && (
+              <Link href="/admin" className={`${styles.link} ${pathname?.startsWith('/admin') ? styles.active : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--primary)', fontWeight: 700 }}>
+                <Shield size={14} /> Console
+              </Link>
+            )}
           </nav>
 
           <div className={styles.actions}>
@@ -173,9 +189,11 @@ export const Navbar = () => {
             <button className={styles.iconButton} onClick={toggleTheme} aria-label="Toggle Dark Mode">
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <Link href="/admin" className={styles.iconButton} aria-label="Admin Console" style={{ display: 'flex' }}>
-              <Shield size={20} style={{ color: 'var(--primary)' }} />
-            </Link>
+            {isAdmin && (
+              <Link href="/admin" className={styles.iconButton} aria-label="Admin Console" style={{ display: 'flex' }}>
+                <Shield size={20} style={{ color: 'var(--primary)' }} />
+              </Link>
+            )}
           </div>
         </>
       )}

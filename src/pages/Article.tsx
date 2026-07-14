@@ -20,35 +20,35 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ id }) => {
   
   // Reading Progress Bar variables and compatibility fallbacks
   const [scrollPercent, setScrollPercent] = useState(0);
-  const [supportsNativeScroll, setSupportsNativeScroll] = useState(true);
-
-  useEffect(() => {
+  const [supportsNativeScroll] = useState(() => {
     if (typeof window !== 'undefined') {
-      const nativeSupported = 
+      return !!(
         window.CSS && 
         window.CSS.supports && 
-        window.CSS.supports('animation-timeline', 'scroll()');
-      
-      setSupportsNativeScroll(!!nativeSupported);
-
-      if (!nativeSupported) {
-        const handleScroll = () => {
-          const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-          if (scrollable > 0) {
-            setScrollPercent(window.scrollY / scrollable);
-          }
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        // Trigger once initially
-        handleScroll();
-        
-        return () => {
-          window.removeEventListener('scroll', handleScroll);
-        };
-      }
+        window.CSS.supports('animation-timeline', 'scroll()')
+      );
     }
-  }, [post]); // Recheck when post is loaded and page expands
+    return true;
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !supportsNativeScroll) {
+      const handleScroll = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollable > 0) {
+          setScrollPercent(window.scrollY / scrollable);
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      // Trigger once initially
+      handleScroll();
+      
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }
+  }, [post, supportsNativeScroll]); // Recheck when post is loaded and page expands
 
   useEffect(() => {
     const fetchArticleData = async () => {
@@ -97,7 +97,7 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ id }) => {
       <div style={{ padding: '6rem 2rem', textAlign: 'center' }}>
         <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Article Not Found</h1>
         <p style={{ color: 'var(--muted)', marginBottom: '2rem' }}>The requested article does not exist or has been removed.</p>
-        <Link href="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>Back to Homepage</Link>
+        <Link href="/blog" style={{ color: 'var(--primary)', fontWeight: 600 }}>Back to Blog</Link>
       </div>
     );
   }

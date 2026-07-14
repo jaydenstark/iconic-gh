@@ -50,7 +50,10 @@ export const Dashboard = () => {
   // Maintain active tab valid within allowed list
   useEffect(() => {
     if (allowedTabs.length > 0 && !allowedTabs.includes(activeTab)) {
-      setActiveTab(allowedTabs[0]);
+      const firstTab = allowedTabs[0];
+      Promise.resolve().then(() => {
+        setActiveTab(firstTab);
+      });
     }
   }, [role, allowedTabs, activeTab]);
 
@@ -142,20 +145,7 @@ export const Dashboard = () => {
 
         {/* Dynamic Mounted Sub-Panel */}
         <main className={styles.mainContent} style={{ flex: 1 }}>
-          {role === 'visitor' ? (
-            <div style={{
-              textAlign: 'center',
-              padding: '5rem 2rem',
-              border: '1px dashed var(--border)',
-              borderRadius: '12px',
-              backgroundColor: 'var(--secondary)'
-            }}>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>Access Restricted</h3>
-              <p style={{ color: 'var(--muted)', maxWidth: '500px', margin: '0 auto 1.5rem', fontSize: '0.9rem' }}>
-                Simulated visitors do not have dashboard editing rights. Switch your active role in the simulation top bar above to explore dashboard actions.
-              </p>
-            </div>
-          ) : (
+          {allowedTabs.length > 0 ? (
             <>
               {activeTab === 'posts' && <PostsPanel />}
               {activeTab === 'categories' && <CategoriesPanel />}
@@ -164,6 +154,19 @@ export const Dashboard = () => {
               {activeTab === 'advertisements' && <AdvertisementsPanel />}
               {activeTab === 'aiauthor' && <AIAuthorPanel />}
             </>
+          ) : (
+            <div style={{
+              textAlign: 'center',
+              padding: '5rem 2rem',
+              border: '1px dashed var(--border)',
+              borderRadius: '12px',
+              backgroundColor: 'var(--secondary)'
+            }}>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>No Access</h3>
+              <p style={{ color: 'var(--muted)', maxWidth: '500px', margin: '0 auto' }}>
+                You do not have permission to access the admin console.
+              </p>
+            </div>
           )}
         </main>
       </div>

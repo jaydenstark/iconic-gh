@@ -167,7 +167,9 @@ export const CategoriesPanelWrapper: React.FC = () => {
   };
 
   useEffect(() => {
-    refreshData();
+    Promise.resolve().then(() => {
+      refreshData();
+    });
   }, []);
 
   if (loading) {

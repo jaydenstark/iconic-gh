@@ -1,9 +1,15 @@
 import React from 'react';
-import { Home } from '@/pages/Home';
+import { CompanyHome } from '@/pages/CompanyHome';
 
 export const metadata = {
-  title: 'ICONIC GH | Breaking Global News & Trending Stories',
-  description: 'Delivering breaking news, deep analysis, and trending stories from around the globe. Stay informed with ICONIC GH.',
+  title: 'ICONIC GH | Premium Software Development & Digital Marketing Agency',
+  description: 'ICONIC GH delivers high-performance custom software solutions, iOS/Android mobile apps, cloud systems, and data-driven digital marketing campaigns.',
+  openGraph: {
+    title: 'ICONIC GH | Premium Software Development & Digital Marketing Agency',
+    description: 'ICONIC GH delivers high-performance custom software solutions, iOS/Android mobile apps, cloud systems, and data-driven digital marketing campaigns.',
+    url: 'https://iconicgh.com',
+    siteName: 'ICONIC GH',
+  }
 };
 
 export default function HomePage() {
@@ -21,10 +27,11 @@ export default function HomePage() {
 
   const orgJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "ProfessionalService",
     "name": "ICONIC GH",
     "url": "https://iconicgh.com",
-    "logo": "https://iconicgh.com/icons/icon-192x192.png",
+    "logo": "https://www.iconicgh.com/logo.png",
+    "description": "Premium software development and digital marketing agency.",
     "sameAs": [
       "https://twitter.com/iconic_gh",
       "https://facebook.com/iconic_gh"
@@ -41,7 +48,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
       />
-      <Home />
+      <CompanyHome />
     </>
   );
 }

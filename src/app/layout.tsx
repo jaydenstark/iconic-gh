@@ -8,11 +8,25 @@ export const metadata: Metadata = {
   title: "ICONIC GH | Premium News Platform",
   description: "Breaking news, deep analysis, and trending stories from around the globe.",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "ICONIC GH | Premium News Platform",
     description: "Breaking news, deep analysis, and trending stories from around the globe.",
     siteName: "ICONIC GH",
     type: "website",
+    images: [
+      {
+        url: "https://www.iconicgh.com/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "ICONIC GH Logo",
+      },
+    ],
   },
 };
 

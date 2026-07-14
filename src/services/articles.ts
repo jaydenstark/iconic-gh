@@ -3,6 +3,7 @@
  * Manages article data, persistence (via localStorage with SSR fallbacks),
  * view tracking, and the trending score algorithm.
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { FirestoreService } from './firebase/firestoreService';
 
@@ -358,12 +359,24 @@ export const ArticlesService = {
     limit?: number;
     includeUnapproved?: boolean;
   }): Promise<Article[]> => {
+    // Normalize category slug to capitalized canonical category name
+    let searchCategory = options?.category;
+    if (searchCategory) {
+      const lower = searchCategory.toLowerCase().trim();
+      if (lower === 'tech' || lower === 'technology') searchCategory = 'Technology';
+      else if (lower === 'politics') searchCategory = 'Politics';
+      else if (lower === 'business') searchCategory = 'Business';
+      else if (lower === 'sports') searchCategory = 'Sports';
+      else if (lower === 'entertainment') searchCategory = 'Entertainment';
+      else if (lower === 'world') searchCategory = 'World';
+    }
+
     const useFirestore = process.env.NEXT_PUBLIC_USE_FIRESTORE === 'true';
     if (useFirestore) {
       try {
         const firestoreOptions: any = {};
-        if (options?.category) {
-          firestoreOptions.category = options.category;
+        if (searchCategory) {
+          firestoreOptions.category = searchCategory;
         }
         
         if (options?.sortBy === 'recent') {
@@ -417,8 +430,8 @@ export const ArticlesService = {
     }
     
     // 1. Filter by category
-    if (options?.category) {
-      list = list.filter(a => a.category.toLowerCase() === options.category!.toLowerCase());
+    if (searchCategory) {
+      list = list.filter(a => a.category.toLowerCase() === searchCategory.toLowerCase());
     }
     
     // 2. Compute trending scores
@@ -539,8 +552,8 @@ export const ArticlesService = {
                    authors[0] || 
                    DEFAULT_AUTHORS.sarah;
     
-    // Exclude authorName from dynamic fields when saving
-    const { authorName, ...restArticleData } = newArticleData as any;
+    const restArticleData = { ...newArticleData } as any;
+    delete restArticleData.authorName;
     
     const newArticle: Article = {
       ...restArticleData,
@@ -909,7 +922,7 @@ export const ArticlesService = {
       const authorsFromFS = await FirestoreService.getAuthors();
       
       for (const article of localArticles) {
-        let authorDoc = authorsFromFS.find(a => a.fullName.toLowerCase() === article.author.name.toLowerCase());
+        const authorDoc = authorsFromFS.find(a => a.fullName.toLowerCase() === article.author.name.toLowerCase());
         const authorId = authorDoc ? authorDoc.id : article.author.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         
         const content = article.body ? (Array.isArray(article.body) ? article.body.join('\n\n') : article.body) : '';

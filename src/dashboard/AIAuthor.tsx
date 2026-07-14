@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { ICONIC_AUTHOR } from '@/services/articles';
 import { RSS_FEEDS } from '@/services/newsCrawler';
 
@@ -378,7 +377,11 @@ export default function AIAuthor() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => {
+    Promise.resolve().then(() => {
+      loadData();
+    });
+  }, [loadData]);
 
   // ── Toggle Iconic on/off
   const togglePause = async () => {
@@ -434,6 +437,7 @@ export default function AIAuthor() {
   const formatDate = (iso?: string) => {
     if (!iso) return 'Never';
     const d = new Date(iso);
+    // eslint-disable-next-line react-hooks/purity
     const diff = Date.now() - d.getTime();
     const mins = Math.floor(diff / 60000);
     if (mins < 1) return 'Just now';

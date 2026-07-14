@@ -29,14 +29,14 @@ export interface ParaphrasedArticle {
 // RSS Feed Sources — Ghana & Africa focused
 // ============================================================
 export const RSS_FEEDS: { name: string; url: string; category: string; enabled: boolean }[] = [
-  { name: 'GhanaWeb', url: 'https://www.ghanaweb.com/GhanaHomePage/rss.xml', category: 'Ghana', enabled: true },
-  { name: 'MyJoyOnline', url: 'https://www.myjoyonline.com/feed/', category: 'Ghana', enabled: true },
-  { name: 'Pulse Ghana', url: 'https://pulse.com.gh/rss.xml', category: 'Ghana', enabled: true },
-  { name: 'Graphic Online', url: 'https://www.graphic.com.gh/feed', category: 'Ghana', enabled: true },
-  { name: 'Modern Ghana', url: 'https://www.modernghana.com/rss/news.asp', category: 'Ghana', enabled: true },
-  { name: 'BBC Africa', url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', category: 'Africa', enabled: true },
-  { name: 'CNN Africa', url: 'https://rss.cnn.com/rss/edition_africa.rss', category: 'Africa', enabled: true },
-  { name: 'AllAfrica', url: 'https://allafrica.com/tools/rss/africa.rss', category: 'Africa', enabled: true },
+  { name: 'GhanaWeb', url: 'https://www.ghanaweb.com/GhanaHomePage/rss.xml', category: 'World', enabled: true },
+  { name: 'MyJoyOnline', url: 'https://www.myjoyonline.com/feed/', category: 'World', enabled: true },
+  { name: 'Pulse Ghana', url: 'https://pulse.com.gh/rss.xml', category: 'World', enabled: true },
+  { name: 'Graphic Online', url: 'https://www.graphic.com.gh/feed', category: 'World', enabled: true },
+  { name: 'Modern Ghana', url: 'https://www.modernghana.com/rss/news.asp', category: 'World', enabled: true },
+  { name: 'BBC Africa', url: 'https://feeds.bbci.co.uk/news/world/africa/rss.xml', category: 'World', enabled: true },
+  { name: 'CNN Africa', url: 'https://rss.cnn.com/rss/edition_africa.rss', category: 'World', enabled: true },
+  { name: 'AllAfrica', url: 'https://allafrica.com/tools/rss/africa.rss', category: 'World', enabled: true },
 ];
 
 // Map category keywords from RSS to site categories
@@ -45,28 +45,57 @@ const CATEGORY_MAP: Record<string, string> = {
   government: 'Politics',
   election: 'Politics',
   parliament: 'Politics',
+  court: 'Politics',
+  minister: 'Politics',
+  president: 'Politics',
   economy: 'Business',
   finance: 'Business',
   business: 'Business',
   market: 'Business',
   trade: 'Business',
+  stock: 'Business',
+  bank: 'Business',
   sports: 'Sports',
   football: 'Sports',
   soccer: 'Sports',
   athletics: 'Sports',
+  coach: 'Sports',
+  team: 'Sports',
+  player: 'Sports',
   entertainment: 'Entertainment',
   music: 'Entertainment',
   film: 'Entertainment',
+  movie: 'Entertainment',
   celebrity: 'Entertainment',
-  health: 'Health',
-  medical: 'Health',
-  covid: 'Health',
+  show: 'Entertainment',
   technology: 'Technology',
   tech: 'Technology',
   digital: 'Technology',
-  africa: 'Africa',
-  ghana: 'Ghana',
+  ai: 'Technology',
+  science: 'Technology',
+  telecom: 'Technology',
 };
+
+// Helper function to normalize any category to one of the 6 standard display categories
+export function normalizeCategory(cat: string): string {
+  const catLower = (cat || '').toLowerCase().trim();
+  if (catLower.includes('politic') || catLower.includes('govern') || catLower.includes('elect') || catLower.includes('parliament') || catLower.includes('court') || catLower.includes('minist') || catLower.includes('presid')) {
+    return 'Politics';
+  }
+  if (catLower.includes('busines') || catLower.includes('econom') || catLower.includes('financ') || catLower.includes('market') || catLower.includes('trade') || catLower.includes('stock') || catLower.includes('money') || catLower.includes('bank') || catLower.includes('indus')) {
+    return 'Business';
+  }
+  if (catLower.includes('sport') || catLower.includes('football') || catLower.includes('soccer') || catLower.includes('athlet') || catLower.includes('cup') || catLower.includes('match') || catLower.includes('game') || catLower.includes('coach') || catLower.includes('team') || catLower.includes('player')) {
+    return 'Sports';
+  }
+  if (catLower.includes('entertain') || catLower.includes('music') || catLower.includes('film') || catLower.includes('movie') || catLower.includes('celebrity') || catLower.includes('show') || catLower.includes('star') || catLower.includes('art') || catLower.includes('cultur') || catLower.includes('celebrat')) {
+    return 'Entertainment';
+  }
+  if (catLower.includes('tech') || catLower.includes('digital') || catLower.includes('comput') || catLower.includes('ai') || catLower.includes('software') || catLower.includes('internet') || catLower.includes('cyber') || catLower.includes('science') || catLower.includes('innovat') || catLower.includes('telecom')) {
+    return 'Technology';
+  }
+  return 'World';
+}
 
 // ============================================================
 // RSS Fetcher
@@ -156,7 +185,7 @@ export function parseRssItems(xml: string, sourceName: string, defaultCategory: 
         description: description.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim().slice(0, 800),
         image,
         pubDate: pubDate || new Date().toISOString(),
-        category: mappedCategory,
+        category: normalizeCategory(mappedCategory),
         source: sourceName,
       });
       count++;
@@ -192,7 +221,7 @@ RULES:
 - Write 3-4 body paragraphs expanding on the story. Add Ghanaian/African context where relevant.
 - Use professional newspaper journalism style — factual, clear, engaging.
 - Do NOT copy the original text verbatim. Paraphrase everything.
-- Choose ONE category from: Ghana, Africa, Politics, Business, Sports, Entertainment, Health, Technology
+- Choose ONE category strictly from: Politics, Business, Technology, Sports, Entertainment, World
 - Estimate reading time (e.g. "3 min read")
 
 INPUT STORY:
@@ -249,20 +278,20 @@ Format exactly:
       title: parsed?.title || item.title,
       excerpt: parsed?.excerpt || item.description?.slice(0, 120),
       body: Array.isArray(parsed?.body) ? parsed.body : (parsed?.body ? [parsed.body] : [item.description]),
-      category: parsed?.category || item.category,
+      category: normalizeCategory(parsed?.category || item.category),
       readTime: parsed?.readTime || '3 min read',
       image: item.image,
       sourceUrl: item.link,
       sourceName: item.source,
     };
-  } catch (error) {
+  } catch {
     console.error("Gemini returned invalid JSON:", cleaned);
 
     return {
       title: item.title,
       excerpt: item.description?.slice(0, 120),
       body: [item.description || "No content available"],
-      category: item.category,
+      category: normalizeCategory(item.category),
       readTime: '3 min read',
       image: item.image,
       sourceUrl: item.link,

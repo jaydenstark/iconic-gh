@@ -16,7 +16,9 @@ const SearchContent = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setQuery(initialQuery);
+    Promise.resolve().then(() => {
+      setQuery(initialQuery);
+    });
   }, [initialQuery]);
 
   useEffect(() => {

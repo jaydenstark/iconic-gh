@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
-  FileText, PlusCircle, Trash2, Edit, Eye, Sparkles, Loader, 
+  Trash2, Edit, Eye, Sparkles, Loader, 
   Laptop, Smartphone, UploadCloud, X, ChevronRight 
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -62,10 +62,12 @@ export const Posts: React.FC<PostsProps> = ({
   // Pre-fill composer values
   useEffect(() => {
     if (categories.length > 0 && !category) {
-      setCategory(categories[0]);
+      const defaultCategory = categories[0];
+      Promise.resolve().then(() => setCategory(defaultCategory));
     }
     if (authors.length > 0 && !authorName) {
-      setAuthorName(authors[0].name);
+      const defaultAuthor = authors[0].name;
+      Promise.resolve().then(() => setAuthorName(defaultAuthor));
     }
   }, [categories, authors, category, authorName]);
 
@@ -849,7 +851,9 @@ export const PostsPanelWrapper: React.FC = () => {
   };
 
   useEffect(() => {
-    refreshData();
+    Promise.resolve().then(() => {
+      refreshData();
+    });
   }, []);
 
   if (loading) {

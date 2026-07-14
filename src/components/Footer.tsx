@@ -11,10 +11,14 @@ export const Footer = () => {
       <div className={styles.grid}>
         <div className={styles.brand}>
           <Link href="/" className={styles.logo}>
-            ICONIC<span>GH</span>
+            <img 
+              src="/logo.png" 
+              alt="ICONIC GH Logo" 
+              style={{ height: '60px', width: 'auto', marginBottom: '1rem' }}
+            />
           </Link>
           <p className={styles.description}>
-            Delivering breaking news, deep analysis, and trending stories from around the globe. Stay informed with ICONIC GH.
+            ICONIC GH is a premium software development and digital marketing agency. We build next-generation applications and scale brands globally through strategic growth campaigns.
           </p>
           <form className={styles.newsletterForm} onSubmit={(e) => e.preventDefault()}>
             <input 
@@ -28,13 +32,13 @@ export const Footer = () => {
         </div>
 
         <div>
-          <h3 className={styles.linkTitle}>Sections</h3>
+          <h3 className={styles.linkTitle}>Services</h3>
           <nav className={styles.links}>
-            <Link href="/categories?c=politics" className={styles.link}>Politics</Link>
-            <Link href="/categories?c=business" className={styles.link}>Business</Link>
-            <Link href="/categories?c=tech" className={styles.link}>Tech</Link>
-            <Link href="/categories?c=sports" className={styles.link}>Sports</Link>
-            <Link href="/categories?c=entertainment" className={styles.link}>Entertainment</Link>
+            <Link href="/#services" className={styles.link}>Software Development</Link>
+            <Link href="/#services" className={styles.link}>Digital Marketing</Link>
+            <Link href="/#services" className={styles.link}>Mobile App Design</Link>
+            <Link href="/#services" className={styles.link}>SEO Optimization</Link>
+            <Link href="/#services" className={styles.link}>Cloud Solutions</Link>
           </nav>
         </div>
 
@@ -42,10 +46,19 @@ export const Footer = () => {
           <h3 className={styles.linkTitle}>Company</h3>
           <nav className={styles.links}>
             <Link href="/about" className={styles.link}>About Us</Link>
-            <Link href="/contact" className={styles.link}>Contact</Link>
+            <Link href="/#portfolio" className={styles.link}>Our Work</Link>
+            <Link href="/#contact" className={styles.link}>Contact Us</Link>
+            <Link href="/admin" className={styles.link}>Admin Console</Link>
+          </nav>
+        </div>
+
+        <div>
+          <h3 className={styles.linkTitle}>Insights</h3>
+          <nav className={styles.links}>
+            <Link href="/blog" className={styles.link}>Blog Home</Link>
+            <Link href="/categories?c=tech" className={styles.link}>Tech News</Link>
+            <Link href="/categories?c=business" className={styles.link}>Business News</Link>
             <Link href="/privacy" className={styles.link}>Privacy Policy</Link>
-            <Link href="/terms" className={styles.link}>Terms of Service</Link>
-            <Link href="/admin" className={styles.link}>Admin Dashboard</Link>
           </nav>
         </div>
       </div>

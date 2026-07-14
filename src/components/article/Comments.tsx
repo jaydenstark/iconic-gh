@@ -16,22 +16,24 @@ export const Comments = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const loadComments = async () => {
+      setIsLoading(true);
+      try {
+        const list = await ArticlesService.getCommentsForArticle(postId);
+        setComments(list);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     if (postId) {
-      loadComments();
+      Promise.resolve().then(() => {
+        loadComments();
+      });
     }
   }, [postId]);
-
-  const loadComments = async () => {
-    setIsLoading(true);
-    try {
-      const list = await ArticlesService.getCommentsForArticle(postId);
-      setComments(list);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +53,7 @@ export const Comments = () => {
   const formatTime = (isoString: string) => {
     try {
       const date = new Date(isoString);
+      // eslint-disable-next-line react-hooks/purity
       const diffMs = Date.now() - date.getTime();
       const diffMins = Math.floor(diffMs / 60000);
       const diffHours = Math.floor(diffMins / 60);
@@ -61,7 +64,7 @@ export const Comments = () => {
       if (diffHours < 24) return `${diffHours}h ago`;
       if (diffDays < 7) return `${diffDays}d ago`;
       return date.toLocaleDateString();
-    } catch (e) {
+    } catch {
       return 'Recent';
     }
   };

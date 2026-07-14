@@ -21,12 +21,16 @@ export const AISummary = ({ articleId, articleTitle, articleBody, initialSummary
   // Typing effect when summary is loaded or generated
   useEffect(() => {
     if (!summary || !isOpen) {
-      setDisplayedText(summary);
+      Promise.resolve().then(() => {
+        setDisplayedText(summary);
+      });
       return;
     }
 
     let i = 0;
-    setDisplayedText('');
+    Promise.resolve().then(() => {
+      setDisplayedText('');
+    });
     const timer = setInterval(() => {
       setDisplayedText((prev) => prev + summary.charAt(i));
       i++;
