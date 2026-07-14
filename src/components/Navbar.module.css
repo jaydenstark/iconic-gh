@@ -1,14 +1,29 @@
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 1000;
   width: 100%;
   height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.transparent {
+  background-color: transparent !important;
+  border-bottom: 1px solid transparent !important;
+  box-shadow: none !important;
+}
+
+.scrolled {
+  background-color: var(--glass-bg) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border) !important;
+  height: calc(var(--nav-height) - 10px) !important;
 }
 
 .logo {

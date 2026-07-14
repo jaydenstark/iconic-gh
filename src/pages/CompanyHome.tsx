@@ -328,14 +328,14 @@ export const CompanyHome = () => {
                 <div className={styles.resultLabel}>Monthly Marketing Retainer</div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', borderTop: '1px solid var(--border)', paddingTop: '1.5rem' }}>
+              <div className={styles.panelDivider}>
                 <div>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--foreground)' }}>~{estimatedTimeWeeks} wks</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>Development Timeline</div>
+                  <div className={styles.timelineNumber}>~{estimatedTimeWeeks} wks</div>
+                  <div className={styles.mutedLabel}>Development Timeline</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent)' }}>+{estimatedLeads}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>Est. Monthly Leads</div>
+                  <div className={styles.leadsNumber}>+{estimatedLeads}</div>
+                  <div className={styles.mutedLabel}>Est. Monthly Leads</div>
                 </div>
               </div>
             </div>

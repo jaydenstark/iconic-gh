@@ -23,6 +23,24 @@ export const Navbar = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isNotificationSupported, setIsNotificationSupported] = useState(false);
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 15);
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+      // Run once on load to set initial state
+      handleScroll();
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     // Check theme preference
     if (typeof window !== 'undefined') {
@@ -102,7 +120,7 @@ export const Navbar = () => {
   };
 
   return (
-    <header className={`${styles.navbar} glass`}>
+    <header className={`${styles.navbar} ${scrolled ? `glass ${styles.scrolled}` : styles.transparent}`}>
       {isSearchOpen ? (
         <div className={styles.searchOverlay}>
           <div className={styles.searchBar}>

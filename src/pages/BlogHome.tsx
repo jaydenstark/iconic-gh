@@ -31,7 +31,7 @@ export const BlogHome = () => {
   }, []);
 
   return (
-    <main>
+    <main className="container">
       <h1 style={{ display: 'none' }}>ICONIC GH - Global Breaking News, Analysis and Trending Stories</h1>
       
       <BreakingTicker />

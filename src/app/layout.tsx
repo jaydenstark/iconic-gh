@@ -40,7 +40,7 @@ export default function RootLayout({
       <body>
         <PWARegistration />
         <Navbar />
-        <main className="container" style={{ minHeight: 'calc(100vh - var(--nav-height) - 300px)' }}>
+        <main style={{ minHeight: 'calc(100vh - var(--nav-height) - 300px)' }}>
           {children}
         </main>
         <Footer />
