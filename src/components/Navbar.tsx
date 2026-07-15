@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Search, Moon, Sun, Bell, BellOff, X, Shield } from 'lucide-react';
 import { ArticlesService, Article } from '@/services/articles';
@@ -167,9 +168,12 @@ export const Navbar = () => {
       ) : (
         <>
           <Link href="/" className={styles.logo}>
-            <img 
+            <Image 
               src="/logo.png" 
               alt="ICONIC GH Logo" 
+              width={150}
+              height={50}
+              priority
               style={{ height: '50px', width: 'auto' }}
             />
           </Link>

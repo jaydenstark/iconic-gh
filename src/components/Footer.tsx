@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from './ui/Button';
 import styles from './Footer.module.css';
 
@@ -11,9 +12,11 @@ export const Footer = () => {
       <div className={styles.grid}>
         <div className={styles.brand}>
           <Link href="/" className={styles.logo}>
-            <img 
+            <Image 
               src="/logo.png" 
               alt="ICONIC GH Logo" 
+              width={180}
+              height={60}
               style={{ height: '60px', width: 'auto', marginBottom: '1rem' }}
             />
           </Link>

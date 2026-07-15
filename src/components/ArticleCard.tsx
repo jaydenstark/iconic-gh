@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Article } from '@/services/articles';
 import styles from './ArticleCard.module.css';
 
@@ -26,12 +27,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   return (
     <article className={styles.card}>
       <Link href={`/article/${article.id}`} className={styles.imageWrapper}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img 
+        <Image 
           src={article.image || 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop'} 
           alt={article.title} 
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={styles.image} 
-          loading="lazy" 
+          style={{ objectFit: 'cover' }}
         />
       </Link>
       <div className={styles.content}>
@@ -47,11 +49,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
         </div>
         <div className={styles.footer}>
           <div className={styles.author}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
+            <Image 
               src={article.author?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop'} 
-              alt={article.author?.name} 
+              alt={article.author?.name || 'Author'} 
+              width={24}
+              height={24}
               className={styles.avatar} 
+              style={{ objectFit: 'cover', borderRadius: '50%' }}
             />
             <span className={styles.authorName}>{article.author?.name}</span>
           </div>

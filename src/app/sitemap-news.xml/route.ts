@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { ArticlesService } from '@/services/articles';
+import { ArticlesService, Article } from '@/services/articles';
 
 export async function GET() {
   const baseUrl = 'https://www.iconicgh.com';
-  let articles: any[] = [];
+  let articles: Article[] = [];
   try {
     articles = await ArticlesService.getArticles();
   } catch (e) {

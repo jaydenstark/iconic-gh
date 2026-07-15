@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Calendar, Clock, Share2 } from 'lucide-react';
 import { Comments } from '@/components/article/Comments';
 import { ViewCounter } from '@/components/article/ViewCounter';
@@ -137,9 +138,15 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ id }) => {
         </div>
       </header>
 
-      <div className={styles.featureImageWrapper}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={post.image} alt={post.title} className={styles.featureImage} />
+      <div className={styles.featureImageWrapper} style={{ position: 'relative', minHeight: '400px', width: '100%', overflow: 'hidden', borderRadius: '12px' }}>
+        <Image 
+          src={post.image} 
+          alt={post.title} 
+          fill
+          priority
+          sizes="(max-width: 1200px) 100vw, 1200px"
+          style={{ objectFit: 'cover' }}
+        />
       </div>
 
       <div className={styles.layout}>
