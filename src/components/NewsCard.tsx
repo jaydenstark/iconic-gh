@@ -32,6 +32,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
           src={article.image || 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop'} 
           alt={article.title} 
           fill
+          unoptimized={article.image ? article.image.startsWith('http') && !article.image.includes('images.unsplash.com') : false}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={styles.image} 
           style={{ objectFit: 'cover' }}
@@ -53,6 +54,7 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
               alt={article.author?.name || 'Author'} 
               width={24}
               height={24}
+              unoptimized={article.author?.avatar ? article.author.avatar.startsWith('http') && !article.author.avatar.includes('images.unsplash.com') : false}
               className={styles.avatar} 
               style={{ objectFit: 'cover', borderRadius: '50%' }}
             />

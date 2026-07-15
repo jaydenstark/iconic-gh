@@ -144,6 +144,7 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ id }) => {
           alt={post.title} 
           fill
           priority
+          unoptimized={post.image ? post.image.startsWith('http') && !post.image.includes('images.unsplash.com') : false}
           sizes="(max-width: 1200px) 100vw, 1200px"
           style={{ objectFit: 'cover' }}
         />
