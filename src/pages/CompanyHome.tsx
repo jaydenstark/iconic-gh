@@ -353,44 +353,59 @@ export const CompanyHome = () => {
         </div>
 
         <div className={styles.portfolioGrid}>
-          {/* Card 1 */}
-          <div className={styles.portfolioCard}>
+          {/* Card 1: Westline Decor */}
+          <a 
+            href="https://www.westlinedecor.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={styles.portfolioCard}
+          >
             <div 
               className={styles.portfolioImage} 
-              style={{ backgroundImage: `url('/portfolio-saas.png')` }}
+              style={{ backgroundImage: `url('/portfolio-westline.png')` }}
             />
             <div className={styles.portfolioOverlay}>
-              <span className={styles.portfolioTag}>SaaS Platform</span>
-              <h4 className={styles.portfolioWorkTitle}>Pulse Analytics</h4>
-              <p className={styles.portfolioWorkDesc}>A real-time customer feedback aggregator with AI analysis and custom dashboard reports.</p>
+              <span className={styles.portfolioTag}>Interior Design & Fit-Out</span>
+              <h4 className={styles.portfolioWorkTitle}>Westline Decor</h4>
+              <p className={styles.portfolioWorkDesc}>Custom architectural interior fitting, 3D architectural modeling, and high-end sourcing platform in Ghana.</p>
             </div>
-          </div>
+          </a>
 
-          {/* Card 2 */}
-          <div className={styles.portfolioCard}>
+          {/* Card 2: Lollarod Enterprise */}
+          <a 
+            href="https://lollarodenterprisenew.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={styles.portfolioCard}
+          >
             <div 
               className={styles.portfolioImage} 
-              style={{ backgroundImage: `url('/portfolio-ecommerce.png')` }}
+              style={{ backgroundImage: `url('/portfolio-lollarod.png')` }}
             />
             <div className={styles.portfolioOverlay}>
-              <span className={styles.portfolioTag}>E-Commerce</span>
-              <h4 className={styles.portfolioWorkTitle}>Apex Headless Store</h4>
-              <p className={styles.portfolioWorkDesc}>Bespoke Shopify store powered by Next.js, achieving sub-second page loads and +25% conversions.</p>
+              <span className={styles.portfolioTag}>Retail & E-Commerce</span>
+              <h4 className={styles.portfolioWorkTitle}>Lollarod Enterprise</h4>
+              <p className={styles.portfolioWorkDesc}>Multi-branch boutique digital catalog and ordering system for luxury home interiors, beddings, and curtains.</p>
             </div>
-          </div>
+          </a>
 
-          {/* Card 3 */}
-          <div className={styles.portfolioCard}>
+          {/* Card 3: Jaybesin Logistics */}
+          <a 
+            href="https://www.jaybesinlogistics.com" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={styles.portfolioCard}
+          >
             <div 
               className={styles.portfolioImage} 
-              style={{ backgroundImage: `url('/portfolio-marketing.png')` }}
+              style={{ backgroundImage: `url('/portfolio-jaybesin.png')` }}
             />
             <div className={styles.portfolioOverlay}>
-              <span className={styles.portfolioTag}>Digital Marketing</span>
-              <h4 className={styles.portfolioWorkTitle}>Aura Brand Campaign</h4>
-              <p className={styles.portfolioWorkDesc}>An integrated SEO, PPC, and content strategies campaign yielding 4x client growth within 6 months.</p>
+              <span className={styles.portfolioTag}>Logistics & Supply Chain</span>
+              <h4 className={styles.portfolioWorkTitle}>Jaybesin Logistics</h4>
+              <p className={styles.portfolioWorkDesc}>Global freight tracking dashboard, customs clearance pipeline, and port terminal cargo management application.</p>
             </div>
-          </div>
+          </a>
         </div>
       </section>
 
