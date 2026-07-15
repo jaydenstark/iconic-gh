@@ -1,11 +1,60 @@
-'use client';
-
 import React from 'react';
 import { ShieldCheck, Lock, Scale } from 'lucide-react';
 
+export const metadata = {
+  title: 'Privacy Policy & Terms | ICONIC GH',
+  description: 'Review the official operational terms, data protection guidelines, and service level policies for ICONIC GH.',
+  alternates: {
+    canonical: '/privacy',
+  },
+  openGraph: {
+    title: 'Privacy Policy & Terms | ICONIC GH',
+    description: 'Review the official operational terms, data protection guidelines, and service level policies for ICONIC GH.',
+    url: 'https://www.iconicgh.com/privacy',
+    siteName: 'ICONIC GH',
+  }
+};
+
 export default function PrivacyPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.iconicgh.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Privacy Policy",
+        "item": "https://www.iconicgh.com/privacy"
+      }
+    ]
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.iconicgh.com/privacy/#webpage",
+    "url": "https://www.iconicgh.com/privacy",
+    "name": "Privacy Policy & Terms | ICONIC GH",
+    "description": "Review the official operational terms, data protection guidelines, and service level policies for ICONIC GH."
+  };
+
   return (
-    <div style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 1.5rem', fontFamily: 'var(--font-sans)', color: 'var(--foreground)' }}>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
+      <div style={{ maxWidth: '800px', margin: '4rem auto', padding: '0 1.5rem', fontFamily: 'var(--font-sans)', color: 'var(--foreground)' }}>
       <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', background: 'linear-gradient(135deg, var(--foreground) 30%, var(--primary) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Privacy Policy & Terms
@@ -67,5 +116,6 @@ export default function PrivacyPage() {
 
       </div>
     </div>
+    </>
   );
 }

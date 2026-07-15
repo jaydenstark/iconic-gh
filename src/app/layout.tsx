@@ -5,9 +5,13 @@ import PWARegistration from "@/components/PWARegistration";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.iconicgh.com"),
   title: "ICONIC GH | Premium News Platform",
   description: "Breaking news, deep analysis, and trending stories from around the globe.",
   manifest: "/manifest.json",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       { url: "/favicon.png", sizes: "32x32", type: "image/png" },
@@ -19,14 +23,21 @@ export const metadata: Metadata = {
     description: "Breaking news, deep analysis, and trending stories from around the globe.",
     siteName: "ICONIC GH",
     type: "website",
+    url: "https://www.iconicgh.com",
     images: [
       {
-        url: "https://www.iconicgh.com/logo.png",
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "ICONIC GH Logo",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ICONIC GH | Premium News Platform",
+    description: "Breaking news, deep analysis, and trending stories from around the globe.",
+    images: ["/logo.png"],
   },
 };
 

@@ -1,12 +1,61 @@
-'use client';
-
 import React from 'react';
 import { Target, Lightbulb, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
+export const metadata = {
+  title: 'About ICONIC GH | Premium Technology & Digital Agency',
+  description: 'Learn about our mission, vision, operating principles, and the engineering and growth marketing leaders driving brand scaling at ICONIC GH.',
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: 'About ICONIC GH | Premium Technology & Digital Agency',
+    description: 'Learn about our mission, vision, operating principles, and the engineering and growth marketing leaders driving brand scaling at ICONIC GH.',
+    url: 'https://www.iconicgh.com/about',
+    siteName: 'ICONIC GH',
+  }
+};
+
 export default function AboutPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.iconicgh.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://www.iconicgh.com/about"
+      }
+    ]
+  };
+
+  const webPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://www.iconicgh.com/about/#webpage",
+    "url": "https://www.iconicgh.com/about",
+    "name": "About ICONIC GH | Premium Technology & Digital Agency",
+    "description": "Learn about our mission, vision, operating principles, and the engineering and growth marketing leaders driving brand scaling at ICONIC GH."
+  };
+
   return (
-    <div style={{ maxWidth: '1000px', margin: '4rem auto', padding: '0 1.5rem', fontFamily: 'var(--font-sans)', color: 'var(--foreground)' }}>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
+      <div style={{ maxWidth: '1000px', margin: '4rem auto', padding: '0 1.5rem', fontFamily: 'var(--font-sans)', color: 'var(--foreground)' }}>
       {/* Hero Section */}
       <div style={{ textAlign: 'center', marginBottom: '4.5rem' }}>
         <span style={{ fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--primary)', letterSpacing: '0.1em' }}>
@@ -139,6 +188,7 @@ export default function AboutPage() {
           </Link>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
