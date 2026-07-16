@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Search, Moon, Sun, Bell, BellOff, X, Shield } from 'lucide-react';
 import { ArticlesService, Article } from '@/services/articles';

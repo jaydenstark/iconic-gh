@@ -30,20 +30,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.4rem 0.8rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: transparent;
   transition: all 0.3s ease;
 }
 
 .logo:hover {
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.06);
   transform: translateY(-1px);
 }
 
 .logo img {
   display: block;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: invert(1) hue-rotate(180deg) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .links {
