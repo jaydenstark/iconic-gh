@@ -20,8 +20,8 @@ export const CompanyHome = () => {
   const [articlesLoading, setArticlesLoading] = useState(true);
 
   // Cost estimator state
-  const [projectScope, setProjectScope] = useState<number>(3); // 1-5 scale
-  const [projectSize, setProjectSize] = useState<number>(10); // 5-50 scale (pages/features)
+  const [projectScope, setProjectScope] = useState<number>(2); // Default to Corporate Website
+  const [projectSize, setProjectSize] = useState<number>(5); 
   const [selectedChannels, setSelectedChannels] = useState<string[]>(['seo', 'ppc']);
 
   // Contact form state
@@ -44,21 +44,79 @@ export const CompanyHome = () => {
     fetchLatestArticles();
   }, []);
 
+  // Predefined Quick Choice Packages configuration
+  const packages = [
+    {
+      id: 'simple',
+      name: 'Startup Landing Page',
+      price: 3500,
+      scope: 1,
+      size: 1,
+      desc: 'Single page site with essential branding, dynamic sections, and instant contact routing.',
+      features: ['1 Landing Page / Section', 'Responsive Mobile-First Design', 'Contact Capture Form', 'Hosting & Domain Setup']
+    },
+    {
+      id: 'corporate',
+      name: 'Professional Business Site',
+      price: 8500,
+      scope: 2,
+      size: 5,
+      desc: 'Sleek multi-page brand profile site with CMS capability to post news and updates.',
+      features: ['Up to 5 Pages', 'Dynamic Blog/News Engine', 'SEO & Performance Optimizations', 'Interactive Cost Calculators']
+    },
+    {
+      id: 'ecommerce',
+      name: 'Premium E-Commerce Catalog',
+      price: 18500,
+      scope: 3,
+      size: 5,
+      desc: 'Complete catalog and payment-ready store for online product ordering and checkout.',
+      features: ['Shopify/Mobile Money checkout', 'Up to 5 Core Product Pages', 'Inventory Management Panel', 'WhatsApp Chat Order Routing']
+    }
+  ];
+
+  const handleSelectPackage = (pkg: typeof packages[0]) => {
+    setProjectScope(pkg.scope);
+    setProjectSize(pkg.size);
+    setFormMessage(`Hello! I would like to request a consultation for the "${pkg.name}" package. Please get back to me!`);
+    const contactSec = document.getElementById('contact');
+    if (contactSec) {
+      contactSec.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleScopeChange = (newScope: number) => {
+    setProjectScope(newScope);
+    const isSimple = newScope === 1;
+    const min = isSimple ? 1 : 5;
+    const max = isSimple ? 10 : 50;
+    setProjectSize((prev) => {
+      if (prev < min) return min;
+      if (prev > max) return max;
+      return prev;
+    });
+  };
+
+  const isSimpleSite = projectScope === 1;
+  const sizeMin = isSimpleSite ? 1 : 5;
+  const sizeMax = isSimpleSite ? 10 : 50;
+
   // Estimator Calculations
   const getScopeDetails = (scope: number) => {
     switch (scope) {
-      case 1: return { name: 'Simple Brand Site', baseCost: 22500, timeWeeks: 2 };
-      case 2: return { name: 'E-commerce Store', baseCost: 52500, timeWeeks: 4 };
-      case 3: return { name: 'Custom SaaS Platform', baseCost: 90000, timeWeeks: 8 };
-      case 4: return { name: 'Enterprise Cloud System', baseCost: 180000, timeWeeks: 12 };
-      case 5: return { name: 'AI-Integrated Application', baseCost: 270000, timeWeeks: 16 };
-      default: return { name: 'Custom App', baseCost: 75000, timeWeeks: 6 };
+      case 1: return { name: 'Simple Landing Page', baseCost: 3500, timeWeeks: 1 };
+      case 2: return { name: 'Corporate Website', baseCost: 8500, timeWeeks: 3 };
+      case 3: return { name: 'E-commerce Platform', baseCost: 18500, timeWeeks: 5 };
+      case 4: return { name: 'Custom SaaS Application', baseCost: 45000, timeWeeks: 8 };
+      case 5: return { name: 'Enterprise AI/Cloud Platform', baseCost: 95000, timeWeeks: 12 };
+      default: return { name: 'Custom App', baseCost: 45000, timeWeeks: 6 };
     }
   };
 
   const scopeInfo = getScopeDetails(projectScope);
-  const sizeCost = projectSize * 3750;
-  const marketingRetainer = selectedChannels.length * 13500;
+  const sizeCostMultiplier = projectScope === 1 ? 500 : projectScope === 2 ? 1000 : projectScope === 3 ? 1800 : projectScope === 4 ? 3000 : 5000;
+  const sizeCost = projectSize * sizeCostMultiplier;
+  const marketingRetainer = selectedChannels.length * 2500;
   
   const estimatedOneTimeCost = scopeInfo.baseCost + sizeCost;
   const estimatedMonthlyMarketing = marketingRetainer;
@@ -78,11 +136,11 @@ export const CompanyHome = () => {
   const getIncludedFeatures = (scope: number) => {
     const common = ['Fully Responsive Layouts', 'SEO-Optimized Codebase', 'Modern Accessibility compliance', 'Developer Handover & Docs'];
     switch (scope) {
-      case 1: return [...common, 'Custom CSS Animations', 'Domain & Hosting Setup'];
-      case 2: return [...common, 'Shopify/Stripe Payment Integration', 'Inventory Management Panel', 'Cart & Secure Checkout'];
-      case 3: return [...common, 'Secure User Auth System', 'Dynamic PostgreSQL/Firebase Database', 'REST/GraphQL Custom APIs', 'Interactive Dashboards'];
-      case 4: return [...common, 'High Availability Multi-zone Deployment', 'Advanced Cloud Monitoring (AWS/GCP)', 'Role-based Access Controls', 'Automated Daily Backups'];
-      case 5: return [...common, 'Gemini/OpenAI Integration', 'Vector Database Search (Pinecone/pgvector)', 'Machine Learning Pipelines', 'Dynamic Model Retraining'];
+      case 1: return ['Fully Responsive Layout', 'SEO-Optimized Codebase', 'Contact Form & Google Maps integration', 'Fast SSD Hosting Setup', '1-Month Free Support'];
+      case 2: return [...common, 'WordPress / Headless CMS Integration', 'Client Testimonials Slider', 'Custom Dynamic Cost Estimator'];
+      case 3: return [...common, 'Shopify/Stripe/Mobile Money Payment Integration', 'Inventory Management Panel', 'Cart & Secure Checkout', 'WhatsApp Chat Order Routing'];
+      case 4: return [...common, 'Secure User Auth System', 'Dynamic PostgreSQL/Firebase Database', 'REST/GraphQL Custom APIs', 'Interactive Analytical Dashboards'];
+      case 5: return [...common, 'Gemini/OpenAI Integration', 'Vector Database Search (Pinecone/pgvector)', 'High Availability Multi-zone Cloud Deployment', 'Automated Daily Backups'];
       default: return common;
     }
   };
@@ -224,6 +282,34 @@ export const CompanyHome = () => {
           </p>
         </div>
 
+        {/* Predefined Quick Choice Packages */}
+        <div className={styles.packagesContainer}>
+          <h3 className={styles.packagesSubheading}>Select a Predefined Website Package</h3>
+          <div className={styles.packagesGrid}>
+            {packages.map((pkg) => (
+              <div 
+                key={pkg.id} 
+                className={`${styles.packageCard} ${projectScope === pkg.scope && projectSize === pkg.size ? styles.packageCardActive : ''}`}
+                onClick={() => handleSelectPackage(pkg)}
+              >
+                <h4 className={styles.pkgName}>{pkg.name}</h4>
+                <div className={styles.pkgPrice}>
+                  <span className={styles.pkgPriceCur}>GH₵</span> {pkg.price.toLocaleString()}
+                </div>
+                <p className={styles.pkgDesc}>{pkg.desc}</p>
+                <div className={styles.pkgFeatures}>
+                  {pkg.features.map((f, i) => (
+                    <div key={i} className={styles.pkgFeatureItem}>
+                      <span className={styles.pkgCheck}>✓</span> {f}
+                    </div>
+                  ))}
+                </div>
+                <button className={styles.pkgButton}>Select & Configure</button>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className={styles.estimatorCard}>
           <div className={styles.estimatorLayout}>
             {/* Controls */}
@@ -240,7 +326,7 @@ export const CompanyHome = () => {
                   min="1" 
                   max="5" 
                   value={projectScope} 
-                  onChange={(e) => setProjectScope(parseInt(e.target.value))}
+                  onChange={(e) => handleScopeChange(parseInt(e.target.value))}
                   className={styles.rangeInput}
                   style={{ '--value-percent': `${(projectScope - 1) / 4 * 100}%` } as React.CSSProperties}
                 />
@@ -248,17 +334,17 @@ export const CompanyHome = () => {
 
               <div className={styles.sliderGroup}>
                 <label className={styles.sliderLabel}>
-                  <span>Screens / Primary Features</span>
-                  <span className={styles.sliderValue}>{projectSize} Modules</span>
+                  <span>{isSimpleSite ? 'Pages / Sections' : 'Screens / Primary Features'}</span>
+                  <span className={styles.sliderValue}>{projectSize} {isSimpleSite ? 'Pages' : 'Modules'}</span>
                 </label>
                 <input 
                   type="range" 
-                  min="5" 
-                  max="50" 
+                  min={sizeMin} 
+                  max={sizeMax} 
                   value={projectSize} 
                   onChange={(e) => setProjectSize(parseInt(e.target.value))}
                   className={styles.rangeInput}
-                  style={{ '--value-percent': `${(projectSize - 5) / 45 * 100}%` } as React.CSSProperties}
+                  style={{ '--value-percent': `${(projectSize - sizeMin) / (sizeMax - sizeMin) * 100}%` } as React.CSSProperties}
                 />
               </div>
 
