@@ -174,7 +174,6 @@ export const Navbar = () => {
               width={150}
               height={50}
               priority
-              style={{ height: '50px', width: 'auto' }}
             />
           </Link>
 

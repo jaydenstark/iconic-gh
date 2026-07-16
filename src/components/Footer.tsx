@@ -17,7 +17,7 @@ export const Footer = () => {
               alt="ICONIC GH Logo" 
               width={180}
               height={60}
-              style={{ height: '60px', width: 'auto', marginBottom: '1rem' }}
+              style={{ marginBottom: '1rem' }}
             />
           </Link>
           <p className={styles.description}>
