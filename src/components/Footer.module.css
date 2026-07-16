@@ -30,11 +30,18 @@
   align-items: center;
   gap: 0.75rem;
   width: fit-content;
+  background-color: #ffffff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .logo img {
   display: block;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .description {

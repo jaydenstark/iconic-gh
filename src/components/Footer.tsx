@@ -12,8 +12,8 @@ export const Footer = () => {
       <div className={styles.grid}>
         <div className={styles.brand}>
           <Link href="/" className={styles.logo}>
-            <Image 
-              src="/logo.png" 
+            <img 
+              src="/logo.png?v=3" 
               alt="ICONIC GH Logo" 
               width={180}
               height={60}
