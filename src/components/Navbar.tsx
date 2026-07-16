@@ -168,10 +168,9 @@ export const Navbar = () => {
         <>
           <Link href="/" className={styles.logo}>
             <img 
-              src="/logo.png?v=3" 
+              src="/logo.png?v=4" 
               alt="ICONIC GH Logo" 
-              width={150}
-              height={50}
+              style={{ height: '42px', width: 'auto' }}
             />
           </Link>
 

@@ -12,11 +12,9 @@ export const Footer = () => {
         <div className={styles.brand}>
           <Link href="/" className={styles.logo}>
             <img 
-              src="/logo.png?v=3" 
+              src="/logo.png?v=4" 
               alt="ICONIC GH Logo" 
-              width={180}
-              height={60}
-              style={{ marginBottom: '1rem' }}
+              style={{ height: '52px', width: 'auto', marginBottom: '1rem' }}
             />
           </Link>
           <p className={styles.description}>
