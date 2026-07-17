@@ -181,11 +181,7 @@ export const Navbar = () => {
             <Link href="/about" className={`${styles.link} ${pathname === '/about' ? styles.active : ''}`}>About</Link>
             <Link href="/blog" className={`${styles.link} ${pathname?.startsWith('/blog') || pathname?.startsWith('/article') || pathname?.startsWith('/categories') || pathname?.startsWith('/search') ? styles.active : ''}`}>Blog</Link>
             <Link href="/#contact" className={styles.link}>Contact</Link>
-            {isAdmin && (
-              <Link href="/admin" className={`${styles.link} ${pathname?.startsWith('/admin') ? styles.active : ''}`} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: 'var(--primary)', fontWeight: 700 }}>
-                <Shield size={14} /> Console
-              </Link>
-            )}
+
           </nav>
 
           <div className={styles.actions}>
@@ -207,11 +203,7 @@ export const Navbar = () => {
             <button className={styles.iconButton} onClick={toggleTheme} aria-label="Toggle Dark Mode">
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            {isAdmin && (
-              <Link href="/admin" className={styles.iconButton} aria-label="Admin Console" style={{ display: 'flex' }}>
-                <Shield size={20} style={{ color: 'var(--primary)' }} />
-              </Link>
-            )}
+
           </div>
         </>
       )}

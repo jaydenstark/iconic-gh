@@ -48,7 +48,7 @@ export const Footer = () => {
             <Link href="/about" className={styles.link}>About Us</Link>
             <Link href="/#portfolio" className={styles.link}>Our Work</Link>
             <Link href="/#contact" className={styles.link}>Contact Us</Link>
-            <Link href="/admin" className={styles.link}>Admin Console</Link>
+
           </nav>
         </div>
 
@@ -72,6 +72,9 @@ export const Footer = () => {
           <a href="#" className={styles.link}>Facebook</a>
           <a href="#" className={styles.link}>Instagram</a>
         </div>
+      </div>
+      <div className={styles.adminBar}>
+        <Link href="/admin" className={styles.adminLink}>Admin Access</Link>
       </div>
     </footer>
   );

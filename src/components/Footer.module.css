@@ -124,3 +124,25 @@
   color: var(--muted);
   font-size: 0.875rem;
 }
+
+/* Discreet admin access bar — tiny text at very bottom of footer */
+.adminBar {
+  text-align: center;
+  padding: 0.6rem 0 0.4rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.adminLink {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.25s ease;
+  text-decoration: none;
+}
+
+.adminLink:hover {
+  color: rgba(255, 255, 255, 0.45);
+}
