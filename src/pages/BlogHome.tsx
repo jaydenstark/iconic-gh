@@ -57,7 +57,7 @@ export const BlogHome = () => {
               No articles found. Check back later!
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <div className="newsTileGrid">
               {posts.map((post) => (
                 <NewsCard key={post.id} article={post} />
               ))}

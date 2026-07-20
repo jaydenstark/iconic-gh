@@ -131,3 +131,47 @@
   font-size: 0.72rem;
   color: var(--muted);
 }
+
+@media (max-width: 639px) {
+  .card {
+    height: auto;
+  }
+
+  .content {
+    padding: 0.65rem;
+  }
+
+  .meta {
+    font-size: 0.62rem;
+    gap: 0.35rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .title {
+    font-size: 0.85rem;
+    line-height: 1.25;
+    margin-bottom: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .excerpt {
+    display: none;
+  }
+
+  .footer {
+    padding-top: 0.35rem;
+  }
+
+  .avatar {
+    width: 18px;
+    height: 18px;
+  }
+
+  .authorName {
+    font-size: 0.68rem;
+  }
+}
+
