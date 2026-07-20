@@ -47,9 +47,15 @@ export const Navbar = () => {
       const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark' ||
         (!document.documentElement.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
       
-      const isSupported = 'Notification' in window;
-      const sub = localStorage.getItem('iconic_gh_push_subscribed') === 'true';
-      const hasPermission = Notification.permission === 'granted';
+      const isSupported = 'Notification' in window && typeof Notification !== 'undefined';
+      let sub = false;
+      try {
+        sub = localStorage.getItem('iconic_gh_push_subscribed') === 'true';
+      } catch (e) {
+        console.warn('localStorage read error:', e);
+      }
+      
+      const hasPermission = isSupported && typeof Notification !== 'undefined' ? Notification.permission === 'granted' : false;
 
       Promise.resolve().then(() => {
         setIsDark(isDarkMode);
@@ -57,7 +63,9 @@ export const Navbar = () => {
         if (sub && hasPermission) {
           setIsSubscribed(true);
         } else if (sub) {
-          localStorage.removeItem('iconic_gh_push_subscribed');
+          try {
+            localStorage.removeItem('iconic_gh_push_subscribed');
+          } catch (e) {}
           setIsSubscribed(false);
         }
       });
@@ -89,13 +97,15 @@ export const Navbar = () => {
   };
 
   const handleSubscribeToggle = async () => {
-    if (!isNotificationSupported) {
-      alert('Desktop notifications are not supported in this browser.');
+    if (!isNotificationSupported || typeof Notification === 'undefined') {
+      alert('Push notifications are not supported in this browser.');
       return;
     }
 
     if (isSubscribed) {
-      localStorage.setItem('iconic_gh_push_subscribed', 'false');
+      try {
+        localStorage.setItem('iconic_gh_push_subscribed', 'false');
+      } catch (e) {}
       setIsSubscribed(false);
       alert('You have unsubscribed from breaking news notifications.');
       return;
@@ -104,7 +114,9 @@ export const Navbar = () => {
     try {
       const permission = await Notification.requestPermission();
       if (permission === 'granted') {
-        localStorage.setItem('iconic_gh_push_subscribed', 'true');
+        try {
+          localStorage.setItem('iconic_gh_push_subscribed', 'true');
+        } catch (e) {}
         setIsSubscribed(true);
         
         new Notification('Welcome to ICONIC GH!', {
