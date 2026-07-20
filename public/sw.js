@@ -40,8 +40,8 @@ self.addEventListener('activate', (event) => {
 
 // 3. Fetch Event: Network-first falling back to Cache for a premium fast reader experience
 self.addEventListener('fetch', (event) => {
-  // Only handle standard HTTP/HTTPS schemes
-  if (!event.request.url.startsWith('http')) return;
+  // Only handle standard HTTP/HTTPS GET requests
+  if (!event.request.url.startsWith('http') || event.request.method !== 'GET') return;
 
   event.respondWith(
     fetch(event.request)
@@ -50,8 +50,8 @@ self.addEventListener('fetch', (event) => {
         if (response && response.status === 200 && response.type === 'basic') {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
+            cache.put(event.request, responseToCache).catch(() => {});
+          }).catch(() => {});
         }
         return response;
       })
