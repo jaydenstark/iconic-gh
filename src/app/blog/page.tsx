@@ -12,6 +12,21 @@ export const metadata = {
     description: 'Stay informed with the latest insights, breaking news, tech trends, and business analysis from around the globe.',
     url: 'https://www.iconicgh.com/blog',
     siteName: 'ICONIC GH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ICONIC GH Blog | Insights, News & Stories',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ICONIC GH Blog | Insights, News & Stories',
+    description: 'Stay informed with the latest insights, breaking news, tech trends, and business analysis from around the globe.',
+    images: ['/og-image.jpg'],
   }
 };
 

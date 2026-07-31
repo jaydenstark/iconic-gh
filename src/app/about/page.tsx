@@ -13,6 +13,21 @@ export const metadata = {
     description: 'Learn about our mission, vision, operating principles, and the engineering and growth marketing leaders driving brand scaling at ICONIC GH.',
     url: 'https://www.iconicgh.com/about',
     siteName: 'ICONIC GH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'About ICONIC GH | Premium Technology & Digital Agency',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About ICONIC GH | Premium Technology & Digital Agency',
+    description: 'Learn about our mission, vision, operating principles, and the engineering and growth marketing leaders driving brand scaling at ICONIC GH.',
+    images: ['/og-image.jpg'],
   }
 };
 

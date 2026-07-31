@@ -11,6 +11,21 @@ export const metadata = {
     description: 'Search articles and news releases by keyword, category, or headline on ICONIC GH.',
     url: 'https://www.iconicgh.com/search',
     siteName: 'ICONIC GH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Search Articles | ICONIC GH',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Search Articles | ICONIC GH',
+    description: 'Search articles and news releases by keyword, category, or headline on ICONIC GH.',
+    images: ['/og-image.jpg'],
   }
 };
 

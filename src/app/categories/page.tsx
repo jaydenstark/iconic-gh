@@ -11,6 +11,21 @@ export const metadata = {
     description: 'Browse articles across technology, business, politics, sports, entertainment, and world news channels on ICONIC GH.',
     url: 'https://www.iconicgh.com/categories',
     siteName: 'ICONIC GH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Explore News Categories | ICONIC GH',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Explore News Categories | ICONIC GH',
+    description: 'Browse articles across technology, business, politics, sports, entertainment, and world news channels on ICONIC GH.',
+    images: ['/og-image.jpg'],
   }
 };
 

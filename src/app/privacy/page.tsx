@@ -12,6 +12,21 @@ export const metadata = {
     description: 'Review the official operational terms, data protection guidelines, and service level policies for ICONIC GH.',
     url: 'https://www.iconicgh.com/privacy',
     siteName: 'ICONIC GH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Privacy Policy & Terms | ICONIC GH',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy & Terms | ICONIC GH',
+    description: 'Review the official operational terms, data protection guidelines, and service level policies for ICONIC GH.',
+    images: ['/og-image.jpg'],
   }
 };
 

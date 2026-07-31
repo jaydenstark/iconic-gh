@@ -12,6 +12,21 @@ export const metadata = {
     description: 'ICONIC GH delivers high-performance custom software solutions, iOS/Android mobile apps, cloud systems, and data-driven digital marketing campaigns.',
     url: 'https://www.iconicgh.com',
     siteName: 'ICONIC GH',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ICONIC GH — Premium Software Development & Digital Marketing Agency',
+      },
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ICONIC GH | Premium Software Development & Digital Marketing Agency',
+    description: 'ICONIC GH delivers high-performance custom software solutions, iOS/Android mobile apps, cloud systems, and data-driven digital marketing campaigns.',
+    images: ['/og-image.jpg'],
   }
 };
 
