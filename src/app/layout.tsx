@@ -39,10 +39,10 @@ export const metadata: Metadata = {
     url: "https://www.iconicgh.com",
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "ICONIC GH Logo",
+        alt: "ICONIC GH — Premium News, Analysis & Stories from Ghana and the World",
       },
     ],
   },
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ICONIC GH | Premium News Platform",
     description: "Breaking news, deep analysis, and trending stories from around the globe.",
-    images: ["/logo.png"],
+    images: ["/og-image.jpg"],
   },
 };
 
